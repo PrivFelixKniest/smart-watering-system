@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Watering</title>
+    <!-- htmx -->
+    <script src="https://unpkg.com/htmx.org@2.0.0"
+            integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw"
+            crossorigin="anonymous"></script>
+    <!-- Apply preferred theme to theme dataset -->
+    <script>
+        const saved = localStorage.getItem("theme");
+        if (saved === "dark" || saved === "light") {
+            document.documentElement.dataset.theme = saved;
+        } else {
+            document.documentElement.dataset.theme =
+                matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+    </script>
+    <!-- DaisyUI and Tailwind -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css"/>
+    <!-- Make Tailwind Dark theme respond to data-theme -->
+    <style type="text/tailwindcss">
+        @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+    </style>
+    <!-- tailwind -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Custom CSS -->
+    <link href="./static/app.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="drawer lg:drawer-open" hx-boost="true" hx-select="#content" hx-target="#content" hx-swap="innerHTML">
+    <input id="my-drawer-3" type="checkbox" class="drawer-toggle btn-square"/>
+    <div class="drawer-content flex flex-col gap-12">
+        <!-- App Bar -->
+        <div class="navbar bg-base-100 shadow-sm flex justify-between items-center">
+            <div class="">
+                <label for="my-drawer-3" class="btn drawer-button lg:hidden">
+                    <svg class="w-[24px] h-[24px] text-gray-800 dark:text-white" aria-hidden="true"
+                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                              d="M5 7h14M5 12h14M5 17h14"/>
+                    </svg>
+                </label>
+                <a class="btn btn-ghost text-xl" href="/">Smart Watering</a>
+            </div>
+            <div>
+                {% include "components/theme/toggleTheme.html" %}
+            </div>
+        </div>
+        <!-- Page content here -->
+        <div class="flex justify-center px-12">
+            <main id="content" class="max-w-[1024px] grow">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+    <aside class="drawer-side">
+        <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
+        <ul class="menu bg-base-200 min-h-full w-80 p-4">
+            <!-- Sidebar content here -->
+            <li><a href="/">
+                Home</a></li>
+            <li><a href="/water-consumption">
+                Water Consumption</a></li>
+            <li><a href="/settings">
+                Settings</a></li>
+        </ul>
+    </aside>
+</div>
+</body>
+</html>
