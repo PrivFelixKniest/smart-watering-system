@@ -1,8 +1,8 @@
 # Smart Watering System
 
-A self-contained garden irrigation controller for a Raspberry Pi Zero 2 W, 3, 4 or better. A Python service runs a
-watering schedule, skips runs when rain is forecast, and exposes a small web dashboard on your local WiFi so you can
-check status, view history, and enable/disable the system from a phone or laptop at home.
+A self-contained garden irrigation controller for a Raspberry Pi Zero 2 W, 3, 4 or better. A Python service decides when
+to water based on live weather data and recent watering history, and exposes a small web dashboard on your local WiFi so
+you can check status, view consumption, and manage profiles from a phone or laptop at home.
 
 No cloud, no subscription, no port forwarding.
 
@@ -14,6 +14,7 @@ No cloud, no subscription, no port forwarding.
 2. [Wiring](#wiring)
 3. [Safety notes](#safety-notes)
 4. [Software](#software)
+5. [Installation & setup](#installation--setup)
 
 ---
 
@@ -37,20 +38,20 @@ No cloud, no subscription, no port forwarding.
 
 ```
 Raspberry Pi Zero 2 W                Relay module
-┌──────────────┐                    ┌──────────────┐
+┌──────────────┐                    ┌───────────────┐
 │  GPIO 17  ───┼────────────────────┤ IN            │
 │  5V       ───┼────────────────────┤ VCC           │
 │  GND      ───┼────────────────────┤ GND           │
-└──────────────┘                    └──────────────┘
+└──────────────┘                    └───────────────┘
                                        │  COM / NO contacts
                                        ▼
-                      ┌───────────────────────────────┐
-                      │  12V DC circuit:               │
+                      ┌─────────────────────────────────┐
+                      │  12V DC circuit:                │
                       │  12V PSU (+) → relay COM        │
                       │  relay NO → solenoid (+)        │
                       │  solenoid (-) → 12V PSU (-)     │
                       │  flyback diode across solenoid  │
-                      └───────────────────────────────┘
+                      └─────────────────────────────────┘
 ```
 
 - The Pi drives only the relay input (3.3 V logic level); the Pi never touches the 12 V circuit.
@@ -80,6 +81,66 @@ Raspberry Pi Zero 2 W                Relay module
 
 ## Software
 
-This Project was built using FastAPI, and HTMX.
+### Architecture at a glance
 
-- Icon Library: https://flowbite.com/icons/
+| Layer         | Choice                                               |
+|---------------|------------------------------------------------------|
+| Language      | Python 3.10+                                         |
+| Web framework | FastAPI                                              |
+| Server        | Uvicorn / `fastapi` CLI                              |
+| Frontend      | HTMX 2.0 + Jinja2 templates (no client JS framework) |
+| Styling       | DaisyUI 5 + Tailwind CSS 4                           |
+| ORM / DB      | SQLAlchemy 2.0 + SQLite (`app.db`)                   |
+| Migrations    | Alembic                                              |
+| HTTP client   | httpx (async) — weather & geocoding API calls        |
+| Validation    | Pydantic v2 (API response models)                    |
+
+### Project layout (under `app/`)
+
+```
+main.py                  FastAPI app entry point
+database/models.py       SQLAlchemy ORM models + engine
+alembic/                 Alembic env + migrations
+clients/                 Async API clients (Open-Meteo forecast + geocoding)
+service/                 Business logic (profiles, weather, water usage)
+v1/                      HTMX/JSON API routers (weather, profiles, usage)
+frontend/                Page router, Jinja2 templates, static assets
+```
+
+### Dependencies
+
+Key runtime packages (see `app/requirements.txt` for the full pinned list):
+`fastapi`, `uvicorn`, `sqlalchemy`, `alembic`, `httpx`, `jinja2`, `pydantic`,
+`python-multipart`.
+
+---
+
+## Installation & setup
+
+### Prerequisites
+
+- Python 3.10 or newer
+
+### Steps
+
+All commands are run from the `app/` directory, because imports and template paths are relative to it.
+
+```sh
+# Navigate to /app
+cd app
+
+# 1. Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate        # Linux/macOS
+# .\venv\Scripts\Activate.ps1   # Windows PowerShell
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Create the database and apply migrations
+alembic upgrade head
+
+# 4. Run the app
+fastapi run main.py
+# or: uvicorn main:app --reload
+```
