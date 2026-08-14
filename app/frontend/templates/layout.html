@@ -32,7 +32,7 @@
     <link href="./static/app.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div class="drawer lg:drawer-open" hx-boost="true" hx-select="#content" hx-target="#content" hx-swap="innerHTML">
+<div class="drawer lg:drawer-open">
     <input id="my-drawer-3" type="checkbox" class="drawer-toggle btn-square"/>
     <div class="drawer-content flex flex-col gap-12">
         <!-- App Bar -->
@@ -48,17 +48,17 @@
                 <a class="btn btn-ghost text-xl" href="/">Smart Watering</a>
             </div>
             <div>
-                {% include "components/theme/toggleTheme.html" %}
+                {% include "components/theme/toggle-theme.html" %}
             </div>
         </div>
         <!-- Page content here -->
-        <div class="flex justify-center px-12">
-            <main id="content" class="max-w-[1024px] grow">
+        <div class="flex justify-center px-12 w-full">
+            <main id="content" class="max-w-[1024px] w-full min-w-0 grow">
                 {% block content %}{% endblock %}
             </main>
         </div>
     </div>
-    <aside class="drawer-side">
+    <aside class="drawer-side" hx-boost="true" hx-select="#content" hx-target="#content" hx-swap="innerHTML">
         <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
         <ul class="menu bg-base-200 min-h-full w-80 p-4">
             <!-- Sidebar content here -->

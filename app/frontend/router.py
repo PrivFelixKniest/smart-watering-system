@@ -1,24 +1,23 @@
 from fastapi.routing import APIRouter, Request
 from starlette.staticfiles import StaticFiles
-from starlette.templating import Jinja2Templates
 
-frontendRouter = APIRouter()
+from frontend.templates import templates
 
-frontendRouter.mount("/static", StaticFiles(directory="frontend/static", ), name="static")
+frontend_router = APIRouter()
 
-templates = Jinja2Templates(directory="frontend/templates")
+frontend_router.mount("/static", StaticFiles(directory="frontend/static", ), name="static")
 
 
-@frontendRouter.get("/")
+@frontend_router.get("/")
 async def index(request: Request):
     return templates.TemplateResponse(request=request, name="index.html")
 
 
-@frontendRouter.get("/water-consumption")
-async def waterConsumption(request: Request):
+@frontend_router.get("/water-consumption")
+async def water_consumption(request: Request):
     return templates.TemplateResponse(request=request, name="water-consumption.html")
 
 
-@frontendRouter.get("/settings")
+@frontend_router.get("/settings")
 async def settings(request: Request):
     return templates.TemplateResponse(request=request, name="settings.html")

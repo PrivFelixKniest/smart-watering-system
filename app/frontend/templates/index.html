@@ -3,7 +3,22 @@
 
 {% block content %}
 
-<h1>Home</h1>
-<p>Your watering system at a glance!</p>
+<h1>Weather</h1>
+<div class="flex flex-col xl:flex-row gap-4 xl:gap-10" hx-get="/v1/weather/" hx-trigger="load" hx-swap="innerHTML">
+    <div class="h-[180px] xl:h-auto xl:grow-1 flex flex-col justify-end rounded-2xl p-4 min-w-[324px]">
+        <div class="flex w-full flex-col gap-4">
+            <div class="skeleton h-4"></div>
+            <div class="skeleton h-4"></div>
+        </div>
+    </div>
+    <div class="card gb-base-100 w-full xl:w-[660px] h-[400px] shadow-sm min-w-0">
+        <div class="card-body">
+            <div class="flex w-full flex-col gap-4">
+                <div class="skeleton h-4"></div>
+                <div class="skeleton h-4"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
