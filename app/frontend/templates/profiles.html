@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% from "components/profiles/upsert-profile-modal.html" import upsert_profile_modal %}
+
+{% block content %}
+
+<h1>Profiles</h1>
+<div id="profiles-table" class="mb-5" hx-get="/v1/profiles/" hx-trigger="load" hx-swap="innerHTML">
+    <div class="flex flex-col gap-2">
+        <div class="skeleton h-10"></div>
+        <div class="skeleton h-10"></div>
+        <div class="skeleton h-10"></div>
+        <div class="skeleton h-10"></div>
+        <div class="skeleton h-10"></div>
+        <div class="skeleton h-10"></div>
+    </div>
+</div>
+<div class="flex gap-4">
+    <button class="btn" onclick="upsert_profile_modal_.showModal()">Create Profile</button>
+</div>
+{{ upsert_profile_modal("create", "", "", "") }}
+
+
+{% endblock %}

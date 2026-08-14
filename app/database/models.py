@@ -1,18 +1,31 @@
-from sqlalchemy import Column, Uuid, String, create_engine, DateTime
-from sqlalchemy.orm import declarative_base
+from datetime import datetime
+from typing import Optional
+
+from sqlalchemy import Uuid, String, create_engine, DateTime, Boolean
+from sqlalchemy.orm import declarative_base, mapped_column, Mapped
 
 Base = declarative_base()
 
 
-class Profile(Base):
+class TableBase():
+    created_at = mapped_column(DateTime, default=datetime.now, nullable=False)
+    updated_at = mapped_column(DateTime, default=datetime.now, nullable=False, onupdate=datetime.now)
+
+
+class Profile(Base, TableBase):
     __tablename__ = "profile"
 
-    id = Column(Uuid, primary_key=True)
-    name = Column(String)
-    city = Column(String)
-    selected_at = Column(DateTime, nullable=True)
+    id = mapped_column(Uuid, primary_key=True)
+    name = mapped_column(String)
+    city = mapped_column(String)
+    selected_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+
+
+class WaterTickEvent(Base, TableBase):
+    __tablename__ = "waterTickEvent"
+
+    id = mapped_column(Uuid, primary_key=True)
+    valve_open = mapped_column(Boolean)
 
 
 engine = create_engine("sqlite:///app.db")
-
-Base.metadata.create_all(engine)

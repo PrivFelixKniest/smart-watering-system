@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from clients.geocoding_open_meteo import geocoding_open_meteo_api
 from clients.open_meteo import open_meteo_api
-from service.profile_service import get_selected_profile
+from service.shared.selected_profile_service import get_selected_profile
 
 
 async def get_weather(db: Session):

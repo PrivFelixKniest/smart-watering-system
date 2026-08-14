@@ -18,6 +18,6 @@ async def water_consumption(request: Request):
     return templates.TemplateResponse(request=request, name="water-consumption.html")
 
 
-@frontend_router.get("/settings")
-async def settings(request: Request):
-    return templates.TemplateResponse(request=request, name="settings.html")
+@frontend_router.get("/profiles")
+async def profiles(request: Request):
+    return templates.TemplateResponse(request=request, name="profiles.html")
