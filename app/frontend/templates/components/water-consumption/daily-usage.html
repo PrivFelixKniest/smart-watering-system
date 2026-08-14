@@ -9,15 +9,14 @@
     <tbody>
     {% for usage in daily_usage %}
         <tr class="hover:bg-base-200 transition-all">
-            <td>
+            <td class="text-nowrap w-0">
                 {{ usage.day }}
             </td>
-            <td class="font-bold">
+            <td class="font-bold text-nowrap w-0">
                 {{ (usage.usage_in_seconds // 60 / 60) | round(2) }} hours
             </td>
-            <td>
-
-                <progress class="progress progress-info w-[600px]" value="{{ usage.usage_in_seconds }}"
+            <td class="">
+                <progress class="progress progress-info w-full" value="{{ usage.usage_in_seconds }}"
                           max="86400"></progress>
             </td>
         </tr>

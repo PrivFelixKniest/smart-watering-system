@@ -1,28 +1,30 @@
 {% macro upsert_profile_modal(type, id, name, city) %}
-<dialog id="upsert_profile_modal_{{id | replace('-','')}}" class="modal">
-    <div class="modal-box">
-        <form method="dialog">
-            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-        </form>
-        <h2>
-            {% if type == "create" %}Create Profile{% endif %}
-            {% if type == "update" %}Update Profile{% endif %}
-        </h2>
-        <form class="flex flex-col gap-5 w-fit m-auto mt-10" hx-put="/v1/profiles/" hx-target="#profiles-table"
-              hx-swap="innerHTML">
-            <label class="input">
-                <span class="label">Name</span>
-                <input name="name" type="text" placeholder="Home" value="{{name}}"/>
-            </label>
-            <label class="input">
-                <span class="label">City</span>
-                <input name="city" type="text" placeholder="Berlin" value="{{city}}"/>
-            </label>
-            <label class="input" hidden>
-                <input name="id" type="text" value="{{id}}"/>
-            </label>
-            <button type="submit" class="btn btn-neutral mt-5">Submit</button>
-        </form>
-    </div>
-</dialog>
+    <dialog id="upsert_profile_modal_{{ id | replace('-','') }}" class="modal">
+        <div class="modal-box">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h2>
+                {% if type == "create" %}Create Profile{% endif %}
+                {% if type == "update" %}Update Profile{% endif %}
+            </h2>
+            <form method="dialog" class="flex flex-col gap-5 w-fit m-auto mt-10" hx-put="/v1/profiles/"
+                  hx-target="#profiles-table"
+                  hx-swap="innerHTML"
+                  hx-on::after-request="if(event.detail.successful) this.closest('dialog').close()">
+                <label class="input">
+                    <span class="label">Name</span>
+                    <input name="name" type="text" placeholder="Home" value="{{ name }}"/>
+                </label>
+                <label class="input">
+                    <span class="label">City</span>
+                    <input name="city" type="text" placeholder="Berlin" value="{{ city }}"/>
+                </label>
+                <label class="input" hidden>
+                    <input name="id" type="text" value="{{ id }}"/>
+                </label>
+                <button type="submit" class="btn mt-5">Submit</button>
+            </form>
+        </div>
+    </dialog>
 {% endmacro %}
