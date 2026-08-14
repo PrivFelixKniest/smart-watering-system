@@ -1,0 +1,14 @@
+<div class="w-full px-3">
+    <input name="watering_demand" type="range" min="0" max="100" value="{{ watering_demand }}"
+           class="range range-info w-full"
+           hx-trigger="input changed delay:.5s" hx-put="/v1/water-consumption/watering-demand"/>
+    <div class="flex justify-between px-2.5 mt-2 items-start">
+        <span class="tooltip" data-tip="No Water">0</span>
+        <span class="">25</span>
+        <span class="tooltip badge badge-success"
+              data-tip="Regular water consumption, optimal for most systems and a good starting point">50</span>
+        <span class="tooltip badge badge-warning" data-tip="75 or more is likely too much for most systems">75</span>
+        <span class="tooltip badge badge-error"
+              data-tip="Lots of water, all the time">100</span>
+    </div>
+</div>

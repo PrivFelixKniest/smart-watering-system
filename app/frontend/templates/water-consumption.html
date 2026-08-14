@@ -3,24 +3,29 @@
 
 {% block content %}
 
-    <h1>Water Consumption</h1>
-
-    <div class="card bg-base-100 rounded-box shadow-sm">
-        <div class="card-body border-b-2 border-solid border-base-200">
-            <div class="font-bold text-lg">Usage Over Time</div>
+    <h1>Water Demand</h1>
+    <div class="mb-10">
+        <div class="mb-5" hx-get="/v1/water-consumption/watering-demand" hx-swap="innerHTML" hx-trigger="load">
+            <div class="skeleton h-5 w-full"></div>
         </div>
-        <div class="card-body overflow-x-auto" hx-get="/v1/water-consumption/usage" hx-trigger="load"
-             hx-swap="innerHTML">
-            <div class="flex flex-col gap-8">
-                <div class="h-5 skeleton"></div>
-                <div class="h-5 skeleton"></div>
-                <div class="h-5 skeleton"></div>
-                <div class="h-5 skeleton"></div>
-                <div class="h-5 skeleton"></div>
-                <div class="h-5 skeleton"></div>
-                <div class="h-5 skeleton"></div>
-                <div class="h-5 skeleton"></div>
-            </div>
+        <p>Adjust the smart watering system to your individual watering needs.
+            Your optimal water demand value will depend on the flow rate
+            of
+            your watering infrastructure, the area that needs to be covered and the associated watering costs.</p>
+    </div>
+
+    <h1>Usage over Time</h1>
+    <div class="overflow-x-auto" hx-get="/v1/water-consumption/usage" hx-trigger="load"
+         hx-swap="innerHTML">
+        <div class="flex flex-col gap-8">
+            <div class="h-5 skeleton"></div>
+            <div class="h-5 skeleton"></div>
+            <div class="h-5 skeleton"></div>
+            <div class="h-5 skeleton"></div>
+            <div class="h-5 skeleton"></div>
+            <div class="h-5 skeleton"></div>
+            <div class="h-5 skeleton"></div>
+            <div class="h-5 skeleton"></div>
         </div>
     </div>
 

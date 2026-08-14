@@ -3,7 +3,7 @@ from typing import Union, Optional
 
 from fastapi import APIRouter
 from fastapi.encoders import jsonable_encoder
-from fastapi.params import Header
+from fastapi.params import Header, Form
 from sqlalchemy.orm import Session
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, JSONResponse
@@ -38,3 +38,26 @@ async def get_usage(request: Request, start_date: Optional[datetime] = None,
         return templates.TemplateResponse(request=request, name="components/water-consumption/daily-usage.html",
                                           context=body)
     return JSONResponse(content=jsonable_encoder(body))
+
+
+@water_consumption_router.get("/watering-demand", response_class=HTMLResponse)
+async def get_sensitivity(request: Request, hx_request: Annotated[Union[str, None], Header()] = None):
+    with Session(engine) as db:
+        demand = await water_consumption_service.get_watering_demand(db)
+
+    body = {
+        "watering_demand": demand
+    }
+
+    if hx_request:
+        return templates.TemplateResponse(request=request, name="components/water-consumption/watering-demand.html",
+                                          context=body)
+    return JSONResponse(content=jsonable_encoder(body))
+
+
+@water_consumption_router.put("/watering-demand", response_class=JSONResponse)
+async def put_sensitivity(watering_demand: Annotated[int, Form()]):
+    with Session(engine) as db:
+        demand = await water_consumption_service.put_watering_demand(db, watering_demand)
+
+    return JSONResponse(content=jsonable_encoder({"watering_demand": demand}))

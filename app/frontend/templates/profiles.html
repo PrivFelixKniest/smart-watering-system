@@ -4,6 +4,9 @@
 {% block content %}
 
     <h1>Profiles</h1>
+    <p>Create and manage different profiles. All customization options like the water demand are tied to the selected
+        profile, also visible at the top. The selected profile is also the one that is actively being used by the
+        watering system.</p>
     <div id="profiles-table" class="mb-5 overflow-x-auto" hx-get="/v1/profiles/" hx-trigger="load" hx-swap="innerHTML">
         <div class="flex flex-col gap-2">
             <div class="skeleton h-10"></div>

@@ -4,6 +4,7 @@ from typing import Optional, Dict
 from sqlalchemy.orm import Session
 
 from database.models import WaterTickEvent
+from service.shared.selected_profile_service import get_selected_profile
 
 
 def calculate_usage_time(event_list: list[WaterTickEvent]):
@@ -41,3 +42,15 @@ async def get_usage(db: Session, start_date: Optional[datetime]):
         usage_per_day_in_seconds[dayKey] = open_time.total_seconds()
 
     return usage_per_day_in_seconds
+
+
+async def get_watering_demand(db: Session):
+    profile = await get_selected_profile(db)
+    return profile.watering_demand
+
+
+async def put_watering_demand(db: Session, watering_demand: int):
+    profile = await get_selected_profile(db)
+    profile.watering_demand = watering_demand
+    db.commit()
+    return profile.watering_demand

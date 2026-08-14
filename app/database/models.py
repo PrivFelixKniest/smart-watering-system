@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import Uuid, String, create_engine, DateTime, Boolean
+from sqlalchemy import Uuid, String, create_engine, DateTime, Boolean, Float
 from sqlalchemy.orm import declarative_base, mapped_column, Mapped
 
 Base = declarative_base()
@@ -19,6 +19,8 @@ class Profile(Base, TableBase):
     name = mapped_column(String, nullable=False)
     city = mapped_column(String, nullable=False)
     selected_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+
+    watering_demand: Mapped[Float] = mapped_column(Float, nullable=False, default=0.0)
 
 
 class WaterTickEvent(Base, TableBase):
