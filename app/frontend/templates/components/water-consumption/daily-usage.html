@@ -1,0 +1,28 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Usage</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for usage in daily_usage %}
+        <tr class="hover:bg-base-200 transition-all">
+            <td>
+                {{ usage.day }}
+            </td>
+            <td class="font-bold">
+                {{ (usage.usage_in_seconds // 60 / 60) | round(2) }} hours
+            </td>
+            <td>
+
+                <progress class="progress progress-info w-[600px]" value="{{ usage.usage_in_seconds }}"
+                          max="86400"></progress>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div>Showing last {{ last_n_days }} days</div>

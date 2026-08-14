@@ -16,16 +16,16 @@ class Profile(Base, TableBase):
     __tablename__ = "profile"
 
     id = mapped_column(Uuid, primary_key=True)
-    name = mapped_column(String)
-    city = mapped_column(String)
+    name = mapped_column(String, nullable=False)
+    city = mapped_column(String, nullable=False)
     selected_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
 
 
 class WaterTickEvent(Base, TableBase):
-    __tablename__ = "waterTickEvent"
+    __tablename__ = "water_tick_event"
 
     id = mapped_column(Uuid, primary_key=True)
-    valve_open = mapped_column(Boolean)
+    valve_open = mapped_column(Boolean, nullable=False)
 
 
 engine = create_engine("sqlite:///app.db")

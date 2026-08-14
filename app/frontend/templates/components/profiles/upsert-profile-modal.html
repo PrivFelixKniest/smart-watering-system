@@ -8,7 +8,7 @@
             {% if type == "create" %}Create Profile{% endif %}
             {% if type == "update" %}Update Profile{% endif %}
         </h2>
-        <form class="flex flex-col gap-2 w-fit m-auto" hx-put="/v1/profiles/" hx-target="#profiles-table"
+        <form class="flex flex-col gap-5 w-fit m-auto mt-10" hx-put="/v1/profiles/" hx-target="#profiles-table"
               hx-swap="innerHTML">
             <label class="input">
                 <span class="label">Name</span>
@@ -21,7 +21,7 @@
             <label class="input" hidden>
                 <input name="id" type="text" value="{{id}}"/>
             </label>
-            <button type="submit" class="btn btn-neutral">Submit</button>
+            <button type="submit" class="btn btn-neutral mt-5">Submit</button>
         </form>
     </div>
 </dialog>
