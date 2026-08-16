@@ -11,7 +11,7 @@ from typing_extensions import Annotated
 
 from database.models import engine
 from frontend.templates import templates
-from service import water_consumption_service
+from service import water_consumption_service, forecast_service
 
 water_consumption_router = APIRouter(prefix="/water-consumption")
 
@@ -26,6 +26,7 @@ async def get_usage(request: Request, start_date: Optional[datetime] = None,
     for dayKey, usage in usage_per_day_in_seconds.items():
         usage_list.append({
             "day": dayKey.strftime("%d.%m"),
+            "weekday": dayKey.strftime("%a"),
             "usage_in_seconds": usage
         })
 
@@ -60,4 +61,32 @@ async def put_sensitivity(watering_demand: Annotated[int, Form()]):
     with Session(engine) as db:
         demand = await water_consumption_service.put_watering_demand(db, watering_demand)
 
-    return JSONResponse(content=jsonable_encoder({"watering_demand": demand}))
+    # Notify listeners (the forecast section) that demand changed so they
+    # re-fetch with the new value.
+    return JSONResponse(
+        content=jsonable_encoder({"watering_demand": demand}),
+        headers={"HX-Trigger": "wateringDemandChanged"},
+    )
+
+
+@water_consumption_router.get("/forecast", response_class=HTMLResponse)
+async def get_forecast(request: Request, days: int = 7,
+                       hx_request: Annotated[Union[str, None], Header()] = None):
+    with Session(engine) as db:
+        city, day_results = await forecast_service.get_forecast_plan(db, days=days)
+
+    total_minutes = sum(d["water_minutes"] for d in day_results)
+    body = {
+        "city": city,
+        "days": day_results,
+        "total_minutes": total_minutes,
+        "watering_days": sum(1 for d in day_results if d["water_minutes"] > 0),
+    }
+
+    if hx_request:
+        return templates.TemplateResponse(
+            request=request,
+            name="components/water-consumption/forecast.html",
+            context=body,
+        )
+    return JSONResponse(content=jsonable_encoder(body))

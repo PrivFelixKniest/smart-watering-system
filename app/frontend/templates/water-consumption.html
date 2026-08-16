@@ -14,7 +14,25 @@
             your watering infrastructure, the area that needs to be covered and the associated watering costs.</p>
     </div>
 
-    <h1>Usage over Time</h1>
+    <div class="card mb-10 overflow-x-auto card bg-base-100 shadow-lg">
+        <div class="card-body">
+            <h2>Forecast over 7 days</h2>
+            <div class=""
+                 hx-get="/v1/water-consumption/forecast"
+                 hx-trigger="load, wateringDemandChanged from:body, profileSelected from:body"
+                 hx-swap="innerHTML">
+                <div class="flex flex-col gap-3">
+                    <div class="h-5 skeleton"></div>
+                    <div class="h-5 skeleton"></div>
+                    <div class="h-5 skeleton"></div>
+                    <div class="h-5 skeleton"></div>
+                    <div class="h-5 skeleton"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1>Recent Usage</h1>
     <div class="overflow-x-auto" hx-get="/v1/water-consumption/usage" hx-trigger="load"
          hx-swap="innerHTML">
         <div class="flex flex-col gap-8">

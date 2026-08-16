@@ -1,7 +1,7 @@
 <table class="table">
     <thead>
     <tr>
-        <th>Date</th>
+        <th>Day</th>
         <th>Usage</th>
         <th></th>
     </tr>
@@ -10,7 +10,8 @@
     {% for usage in daily_usage %}
         <tr class="hover:bg-base-200 transition-all">
             <td class="text-nowrap w-0">
-                {{ usage.day }}
+                <div class="font-medium">{{ usage.day }}</div>
+                <div class="text-xs text-base-content/60">{{ usage.weekday }}</div>
             </td>
             <td class="font-bold text-nowrap w-0">
                 {{ (usage.usage_in_seconds // 60 / 60) | round(2) }} hours

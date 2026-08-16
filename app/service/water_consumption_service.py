@@ -35,11 +35,19 @@ async def get_usage(db: Session, start_date: Optional[datetime]):
         else:
             events_per_day[event_day_key].append(event)
 
+    # Build a dense dict over the full window so days with no events
+    # (no watering, no ticks at all) show up as 0 instead of being absent.
     usage_per_day_in_seconds: Dict[date, float] = {}
-
-    for dayKey, event_list in events_per_day.items():
-        open_time = calculate_usage_time(event_list)
-        usage_per_day_in_seconds[dayKey] = open_time.total_seconds()
+    today = date.today()
+    d = start_date.date() if isinstance(start_date, datetime) else start_date
+    while d <= today:
+        event_list = events_per_day.get(d, [])
+        if event_list:
+            open_time = calculate_usage_time(event_list)
+            usage_per_day_in_seconds[d] = open_time.total_seconds()
+        else:
+            usage_per_day_in_seconds[d] = 0.0
+        d += timedelta(days=1)
 
     return usage_per_day_in_seconds
 

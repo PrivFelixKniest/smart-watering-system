@@ -2,7 +2,8 @@
      style="background-image: url('{{ current.image_url }}');">
     <div class="flex gap-10 items-baseline">
         <div class="text-[2.5rem] lg:text-[3rem]">
-            {{ current.temperature }}<span class="text-[1.1rem] lg:text-[1.3rem] opacity-70">{{ current.temperature_unit }}</span>
+            {{ current.temperature }}<span
+                class="text-[1.1rem] lg:text-[1.3rem] opacity-70">{{ current.temperature_unit }}</span>
         </div>
     </div>
     <div class="flex gap-4 items-baseline flex-wrap">
@@ -19,33 +20,33 @@
             </div>
         </span>
         <div class="text-[.7rem] lg:text-[.8rem]">
-            {{city}}
+            {{ city }}
         </div>
     </div>
 
 </div>
-<div class="card gb-base-100 shadow-sm w-full xl:w-[660px] min-w-0">
+<div class="card gb-base-100 shadow-lg w-full xl:w-[660px] min-w-0">
     <div class="card-body max-h-[400px] p-0 overflow-y-auto overflow-x-auto">
         <table class="table relative">
             <thead class="sticky top-0 z-[1] bg-base-100">
             <tr>
                 <th>
-                    Temperature ({{hourly_units.temperature_unit}})
+                    Temperature ({{ hourly_units.temperature_unit }})
                 </th>
                 <th>
                     <span class="tooltip tooltip-bottom" data-tip="All forms of precipitation, rain and snow">
-                        Rain ({{hourly_units.precipitation_unit}})
+                        Rain ({{ hourly_units.precipitation_unit }})
                     </span>
                 </th>
                 <th>
                     <span class="tooltip tooltip-bottom" data-tip="Chance of any precipitation, rain and snow">
-                        Rain Chance ({{hourly_units.precipitation_probability_unit}})
+                        Rain Chance ({{ hourly_units.precipitation_probability_unit }})
                     </span>
                 </th>
                 <th>
                     <span class="tooltip tooltip-bottom"
                           data-tip="Reference evapotranspiration: water demand from evaporation + plant transpiration">
-                        ET₀ ({{hourly_units.et0_unit}})
+                        ET₀ ({{ hourly_units.et0_unit }})
                     </span>
                 </th>
                 <th>
@@ -56,31 +57,31 @@
             <tbody>
 
             {% for hour in hourly_forecast %}
-            <tr class="hover:bg-base-200 transition-all">
-                <td>
-                    {{hour.temperature}}
-                    <progress class="progress progress-warning w-full" value="{{hour.temperature}}"
-                              max="40"></progress>
-                </td>
-                <td>
-                    {{hour.precipitation}}
-                    <progress class="progress progress-primary w-full" value="{{hour.precipitation}}"
-                              max="1.5"></progress>
-                </td>
-                <td>
-                    {{hour.precipitation_probability}}
-                    <progress class="progress progress-info w-full" value="{{hour.precipitation_probability}}"
-                              max="100"></progress>
-                </td>
-                <td>
-                    {{hour.et0}}
-                    <progress class="progress progress-error w-full" value="{{hour.et0}}"
-                              max="1"></progress>
-                </td>
-                <td>
-                    {{hour.time}}
-                </td>
-            </tr>
+                <tr class="hover:bg-base-200 transition-all">
+                    <td>
+                        {{ hour.temperature }}
+                        <progress class="progress progress-warning w-full" value="{{ hour.temperature }}"
+                                  max="40"></progress>
+                    </td>
+                    <td>
+                        {{ hour.precipitation }}
+                        <progress class="progress progress-primary w-full" value="{{ hour.precipitation }}"
+                                  max="1.5"></progress>
+                    </td>
+                    <td>
+                        {{ hour.precipitation_probability }}
+                        <progress class="progress progress-info w-full" value="{{ hour.precipitation_probability }}"
+                                  max="100"></progress>
+                    </td>
+                    <td>
+                        {{ hour.et0 }}
+                        <progress class="progress progress-error w-full" value="{{ hour.et0 }}"
+                                  max="1"></progress>
+                    </td>
+                    <td>
+                        {{ hour.time }}
+                    </td>
+                </tr>
             {% endfor %}
             </tbody>
         </table>

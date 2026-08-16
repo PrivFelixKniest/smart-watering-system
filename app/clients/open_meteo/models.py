@@ -21,6 +21,9 @@ class HourlyUnits(BaseModel):
     precipitation: str
     precipitation_probability: str
     et0_fao_evapotranspiration: str
+    soil_temperature_0cm: str
+    soil_moisture_1_to_3cm: str
+    snow_depth: str
 
 
 class HourlyForecast(BaseModel):
@@ -29,6 +32,9 @@ class HourlyForecast(BaseModel):
     precipitation: list[float]
     precipitation_probability: list[float]
     et0_fao_evapotranspiration: list[float]
+    soil_temperature_0cm: list[float]
+    soil_moisture_1_to_3cm: list[float]
+    snow_depth: list[float]
 
 
 class WeatherResponse(BaseModel):
@@ -39,3 +45,4 @@ class WeatherResponse(BaseModel):
     current: CurrentWeather
     hourly_units: HourlyUnits
     hourly: HourlyForecast
+    timezone: str = "UTC"

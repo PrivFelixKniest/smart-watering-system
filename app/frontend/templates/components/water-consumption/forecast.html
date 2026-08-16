@@ -1,0 +1,80 @@
+<div>
+    <div class="flex items-baseline gap-3 mb-3">
+        <div>
+            <span class="text-xl ">{{ total_minutes }}</span>
+            <span class="text-base-content/60">min total</span>
+        </div>
+        <div class="text-base-content/60">
+            over {{ watering_days }} / {{ days|length }} days
+        </div>
+        <div class="text-base-content/60">·</div>
+        <div class="text-base-content/60">{{ city }}</div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Day</th>
+            <th>Water</th>
+            <th>Soil</th>
+            <th>Rain</th>
+            <th>Temp</th>
+            <th>Reason</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for day in days %}
+            <tr class="hover:bg-base-200 transition-all">
+                <td class="text-nowrap w-0">
+                    <div class="font-medium">{{ day.date }}</div>
+                    <div class="text-xs text-base-content/60">{{ day.weekday }}</div>
+                </td>
+                <td class="text-nowrap w-0">
+                    {% if day.water_minutes > 0 %}
+                        <span class="font-bold text-info">{{ day.water_minutes }} min</span>
+                    {% else %}
+                        <span class="text-base-content/40">—</span>
+                    {% endif %}
+                </td>
+                <td class="text-nowrap w-0">
+                    <div class="text-xs mb-1">{{ day.moisture_end|round(2) }}</div>
+                    <progress class="progress progress-success w-20"
+                              value="{{ day.moisture_end }}" max="0.30"></progress>
+                </td>
+                <td class="text-nowrap w-0">
+                    <div class="text-xs mb-1">{{ day.rain_mm }} mm</div>
+                    <progress class="progress progress-primary w-20"
+                              value="{{ day.rain_mm }}" max="20"></progress>
+                </td>
+                <td class="text-nowrap w-0 text-base-content/70">
+                    {{ day.temp_avg }}°C
+                </td>
+                <td class="text-nowrap">
+                    {% if day.skip_reason %}
+                        {% set reason_tips = {
+                        "off": "Watering demand is set to 0 — the system is off.",
+                        "morning only": "Watering only happens 04:00–10:00 to limit evaporation and fungus.",
+                        "frozen": "Soil temperature is at or below 1°C — ground is frozen.",
+                        "snow": "Snow depth is ≥ 1 cm — system is dormant.",
+                        "rain forecast": "≥ 5 mm of rain expected in the next 24 h — rain will water for free.",
+                        "cadence": "Watered too recently — waiting for the minimum interval between watering days.",
+                        "budget": "Rolling 3-day water budget has been spent — limit reached.",
+                        "soil moist": "Soil moisture is already at or above the demand-scaled threshold.",
+                        "—": "No specific reason."
+                    } %}
+                        <span class="tooltip tooltip-left text-xs text-base-content/50"
+                              data-tip="{{ reason_tips.get(day.skip_reason, day.skip_reason) }}">
+                        {{ day.skip_reason }}
+                    </span>
+                    {% else %}
+                        <span class="tooltip tooltip-left text-xs text-info"
+                              data-tip="The engine decided to open the valve on this day.">
+                        watering
+                    </span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 from typing import Optional
 
@@ -15,7 +16,7 @@ class TableBase():
 class Profile(Base, TableBase):
     __tablename__ = "profile"
 
-    id = mapped_column(Uuid, primary_key=True)
+    id = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
     name = mapped_column(String, nullable=False)
     city = mapped_column(String, nullable=False)
     selected_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
@@ -26,7 +27,7 @@ class Profile(Base, TableBase):
 class WaterTickEvent(Base, TableBase):
     __tablename__ = "water_tick_event"
 
-    id = mapped_column(Uuid, primary_key=True)
+    id = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
     valve_open = mapped_column(Boolean, nullable=False)
 
 
