@@ -3,7 +3,7 @@
     <a href="/water-consumption" class="card bg-base-100 shadow-lg hover:shadow-md transition-all">
         <div class="card-body p-5 gap-3">
             <div class="flex items-center justify-between">
-                <h2 class="card-title text-base">Watering</h2>
+                <h2 class="card-title text-base">Water Consumption</h2>
                 <span class="badge badge-soft badge-info">
                     demand {{ profile.watering_demand }}
                 </span>
@@ -11,7 +11,7 @@
             <div class="flex gap-3">
                 {% for day in recent_days %}
                     <div class="flex-1 flex flex-col items-center gap-1">
-                        <div class="text-xs text-base-content/60">{{ day.weekday }}</div>
+                        <div class="text-xs">{{ day.weekday }}</div>
                         {% if day.minutes > 0 %}
                             <div class="text-lg font-bold text-info">{{ day.minutes }}</div>
                             <div class="text-[0.6rem] text-base-content/50">min</div>

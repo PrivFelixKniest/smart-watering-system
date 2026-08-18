@@ -49,7 +49,7 @@ async def get_forecast_plan(db: Session, days: int = 7):
     snow_depth = weather.hourly.snow_depth
     et0 = weather.hourly.et0_fao_evapotranspiration
 
-    moisture = soil_moist[0]
+    moisture = soil_moist[0] if soil_moist and soil_moist[0] is not None else FIELD_CAPACITY
     # Seed the engine state from persisted history so the forecast behaves
     # as if the system had been running continuously.  `seeded_last_watering`
     # holds the most recent real watering before the forecast window; it is

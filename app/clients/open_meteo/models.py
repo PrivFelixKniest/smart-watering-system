@@ -33,8 +33,8 @@ class HourlyForecast(BaseModel):
     precipitation_probability: list[float]
     et0_fao_evapotranspiration: list[float]
     soil_temperature_0cm: list[float]
-    soil_moisture_1_to_3cm: list[float]
-    snow_depth: list[float]
+    soil_moisture_1_to_3cm: list[float | None]
+    snow_depth: list[float | None]
 
 
 class WeatherResponse(BaseModel):

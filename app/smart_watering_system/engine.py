@@ -34,7 +34,12 @@ MORNING_END = 10
 
 FREEZE_SOIL_TEMP_C = 1.0       # below this, ground is frozen
 SNOW_DEPTH_M = 0.01           # 1 cm of snow -> dormancy
-HEAVY_RAIN_FORECAST_MM = 5.0  # skip if this much rain in the next 24 h
+# Heavy-rain skip threshold (mm in the next 24 h), scaled by demand.
+# High-demand plants can drink more, so it takes heavier rain to skip;
+# low-demand plants barely need water, so a little rain suffices.
+HEAVY_RAIN_MM_AT_0 = 1.0
+HEAVY_RAIN_MM_AT_50 = 3.0
+HEAVY_RAIN_MM_AT_100 = 5.0
 FORECAST_HOURS = 24
 
 # Soil moisture (m3/m3, Open-Meteo's 1-3 cm layer).
@@ -130,6 +135,18 @@ def budget_seconds(demand: float) -> float:
     return b
 
 
+def heavy_rain_mm(demand: float) -> float:
+    """Rain amount (mm) in the next 24 h that suppresses watering.
+
+    Scales with demand: low-demand plants skip on little rain (1 mm at
+    demand 0), high-demand plants only skip on heavy rain (5 mm at demand
+    100).  Between 50 and 100 it rises linearly; below 50 it falls linearly.
+    """
+    if demand <= 50:
+        return HEAVY_RAIN_MM_AT_50 + (HEAVY_RAIN_MM_AT_0 - HEAVY_RAIN_MM_AT_50) * (1.0 - demand / 50.0)
+    return HEAVY_RAIN_MM_AT_50 + (HEAVY_RAIN_MM_AT_100 - HEAVY_RAIN_MM_AT_50) * ((demand - 50) / 50.0)
+
+
 def _calendar_days_between(a: datetime, b: datetime) -> int:
     """Whole calendar days from date(a) to date(b).  Same-day -> 0."""
     return (b.date() - a.date()).days
@@ -189,7 +206,7 @@ def decide(
         if hourly_times[i] > horizon:
             break
         upcoming_rain += precipitation[i]
-    if upcoming_rain >= HEAVY_RAIN_FORECAST_MM:
+    if upcoming_rain >= heavy_rain_mm(watering_demand):
         return Decision(0.0, REASON_RAIN_FORECAST)
 
     # 5. Minimum interval between watering *days* (calendar-day based).
