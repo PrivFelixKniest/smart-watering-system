@@ -3,6 +3,7 @@ from v1.profiles_router import profiles_router
 from v1.selected_profile_router import selected_profile_router
 from v1.water_consumption_router import water_consumption_router
 from v1.home_router import home_router
+from v1.valve_router import valve_router
 
 from v1.weather_router import weather_router
 
@@ -13,3 +14,4 @@ v1_router.include_router(profiles_router)
 v1_router.include_router(selected_profile_router)
 v1_router.include_router(water_consumption_router)
 v1_router.include_router(home_router)
+v1_router.include_router(valve_router)

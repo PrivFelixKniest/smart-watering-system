@@ -28,7 +28,7 @@
 
     <h1 class="mt-10">Overview</h1>
     <div hx-get="/v1/home/summary-cards"
-         hx-trigger="load, profileSelected from:body, wateringDemandChanged from:body"
+         hx-trigger="load, profileSelected from:body, wateringDemandChanged from:body, valveStateChanged from:body"
          hx-swap="innerHTML">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="card bg-base-100 shadow-lg">

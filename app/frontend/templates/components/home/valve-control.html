@@ -1,0 +1,27 @@
+<div id="valve-control"
+     class="card bg-base-100 shadow-lg"
+     hx-get="/v1/valve/state"
+     hx-trigger="every 10s"
+     hx-target="this"
+     hx-swap="outerHTML">
+    <div class="card-body p-4 flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                 class="w-6 h-6 {% if valve_open %}text-info{% else %}text-base-content/30{% endif %}">
+                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+            </svg>
+            <span class="text-sm font-medium {% if valve_open %}text-info{% else %}text-base-content/50{% endif %}">
+                {% if valve_open %}Watering{% else %}Off{% endif %}
+            </span>
+        </div>
+        <input type="checkbox" class="toggle toggle-success"
+               {% if valve_open %}checked{% endif %}
+               aria-label="Toggle valve"
+               hx-post="/v1/valve/toggle"
+               hx-trigger="change"
+               hx-target="#valve-control"
+               hx-swap="outerHTML"
+               hx-disabled-elt="this">
+    </div>
+</div>

@@ -62,17 +62,31 @@
             </main>
         </div>
     </div>
-    <aside class="drawer-side" hx-boost="true" hx-select="#content" hx-target="#content" hx-swap="innerHTML">
+    <aside class="drawer-side">
         <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
-        <ul class="menu bg-base-200 min-h-full w-80 p-4">
-            <!-- Sidebar content here -->
-            <li><a href="/">
-                Home</a></li>
-            <li><a href="/water-consumption">
-                Water Consumption</a></li>
-            <li><a href="/profiles">
-                Profiles</a></li>
-        </ul>
+        <div class="flex flex-col w-80 h-full bg-base-200">
+            <div class="p-4 pb-0">
+                <div id="valve-control" class="card bg-base-100 shadow-lg"
+                     hx-get="/v1/valve/state"
+                     hx-trigger="load"
+                     hx-swap="outerHTML">
+                    <div class="card-body p-4 flex-row items-center justify-between gap-4">
+                        <div class="skeleton h-6 w-6 rounded-full"></div>
+                        <div class="skeleton h-6 w-12 rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+            <ul class="menu bg-base-200 w-full p-4 grow"
+                hx-boost="true" hx-select="#content" hx-target="#content" hx-swap="innerHTML">
+                <!-- Sidebar content here -->
+                <li><a href="/">
+                    Home</a></li>
+                <li><a href="/water-consumption">
+                    Water Consumption</a></li>
+                <li><a href="/profiles">
+                    Profiles</a></li>
+            </ul>
+        </div>
     </aside>
 </div>
 </body>
