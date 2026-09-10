@@ -6,6 +6,8 @@ you can check status, view consumption, and manage profiles from a phone or lapt
 
 No cloud, no subscription, no port forwarding.
 
+<img width="1758" height="986" alt="image" src="https://github.com/user-attachments/assets/35b6f554-bf45-4d32-8210-5febc47dc554" />
+
 ## Table of contents
 
 1. [Hardware parts list](#hardware-parts-list)
@@ -115,6 +117,10 @@ Cooling for the pi should normally not be an issue, but if you want to avoid ove
   transmits.
 
 ## Software
+
+### Start the App
+
+Once the app is running, you can access it under http://localhost:8000/ on the local device or from http://<<your-device-name>>.local:8000/, where `<<your-device-name>>` is the network identifier / network name of your device. This name can for example be set during any linux OS setup and is also part of the normal raspberry pi image creation process using [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
 
 ### Architecture at a glance
 
