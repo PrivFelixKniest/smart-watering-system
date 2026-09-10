@@ -154,7 +154,7 @@ Key runtime packages (see `app/requirements.txt` for the full pinned list):
 
 ### Access the App (After Starting it)
 
-Once the app is running, you can access it under http://localhost:8000/ on the local device or from http://your-device-name.local:8000/, where `your-device-name` is the network identifier / network name of your device. This name can for example be set during any linux OS setup and is also part of the normal raspberry pi image creation process using [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
+Once the app is running, you can access it under http://localhost:8000/ on the local device or from any device in the local network under http://your-device-name.local:8000/, where `your-device-name` is the network identifier / network name of your device. This name can for example be set during any linux OS setup and is also part of the normal raspberry pi image creation process using [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
 
 ### Running in production (autostart on boot)
 
