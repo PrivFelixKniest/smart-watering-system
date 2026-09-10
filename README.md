@@ -176,8 +176,23 @@ sudo systemctl restart smart-watering    # after editing app/.env, etc.
 ```
 
 **This is for production deployments only.** For local development, follow the manual steps in
-[Installation & setup](#installation--setup) instead — `install.sh` installs system packages via `apt`/`sudo` and a
+[Manual & Dev Setup](#manual--dev-setup) instead — `install.sh` installs system packages via `apt`/`sudo` and a
 systemd unit, neither of which you want on a dev machine.
+
+#### Uninstalling autostart
+
+To stop the app from starting on boot and remove the service `install.sh` registered:
+
+```sh
+sudo systemctl stop smart-watering       # stop it right now
+sudo systemctl disable smart-watering    # stop it from starting on future boots
+sudo rm /etc/systemd/system/smart-watering.service
+sudo systemctl daemon-reload
+```
+
+This only removes the autostart registration — the venv, database, and `.env` under `app/` are left untouched, so
+you can still run the app manually (see [Manual & Dev Setup](#manual--dev-setup)) or re-run `scripts/install.sh`
+later to reinstall the service.
 
 ---
 
